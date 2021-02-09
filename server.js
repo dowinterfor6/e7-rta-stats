@@ -4,6 +4,15 @@ const port = process.env.PORT || 5000;
 const bodyParser = require("body-parser");
 
 const sqlite3 = require("sqlite3").verbose();
+
+const {
+  players,
+  prebans,
+  postbans,
+  topPicks,
+  firstPicks,
+} = require("./util/sqlStatements");
+
 const db = new sqlite3.Database(
   "./db/rta_snapshot_2021_2_7.db",
   sqlite3.OPEN_READONLY,
@@ -16,41 +25,53 @@ const db = new sqlite3.Database(
   }
 );
 
-const dbData = [];
+const dbData = {};
+
+const fetchFromDatabase = (sqlStatementObj) => {
+  const dbResponse = {};
+
+  for (const [key, value] of Object.entries(sqlStatementObj)) {
+    if (typeof value === "string") {
+      const sqlStatementResponse = [];
+
+      db.each(value, (err, row) => {
+        if (err) {
+          console.error(err.message);
+        }
+        sqlStatementResponse.push(row);
+      });
+
+      dbResponse[key] = sqlStatementResponse;
+    } else {
+      let test = value.reduce((acc, val) => {
+        const sqlStatementResponses = [];
+        db.each(val.statement, (err, row) => {
+          if (err) {
+            console.error(err.message);
+          }
+          sqlStatementResponses.push(row);
+        });
+        if (val.region) {
+          acc[val.region] = sqlStatementResponses;
+        } else {
+          acc[val.league] = sqlStatementResponses;
+        }
+        return acc;
+      }, {});
+
+      dbResponse[key] = test;
+    }
+  }
+
+  return dbResponse;
+};
 
 db.serialize(() => {
-  db.each(
-    `
-    SELECT
-      P1_PICK1 as firstPick,
-      P1_LEAGUE as league,
-      COUNT(*) as count
-    FROM (
-      SELECT
-        P1_PICK1, P1_LEAGUE
-      FROM
-        battle_logs
-      UNION ALL
-      SELECT
-        P2_PICK1, P2_LEAGUE
-      FROM
-        battle_logs
-    )
-    WHERE
-      league = "legend"
-    GROUP BY
-      firstPick
-    ORDER BY
-      count DESC
-    `,
-    (err, row) => {
-      if (err) {
-        console.error(err.message);
-      }
-
-      dbData.push(row);
-    }
-  );
+  dbData.players = fetchFromDatabase(players);
+  dbData.prebans = fetchFromDatabase(prebans);
+  dbData.postbans = fetchFromDatabase(postbans);
+  dbData.topPicks = fetchFromDatabase(topPicks);
+  dbData.firstPicks = fetchFromDatabase(firstPicks);
 });
 
 db.close((err) => {
@@ -58,7 +79,7 @@ db.close((err) => {
     console.error(err.message);
   }
 
-  console.log(dbData);
+  // console.log(dbData);
   console.log("Close db connection");
 });
 
@@ -74,7 +95,7 @@ app.use(bodyParser.json());
 
 // TODO: Data from db
 app.get("/api/test", (req, res) => {
-  res.json({ test: true });
+  res.json(dbData);
 });
 
 module.exports = app.listen(port, () =>
