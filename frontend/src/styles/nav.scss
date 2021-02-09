@@ -1,0 +1,22 @@
+nav {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  menu {
+    width: 200px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    li {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
