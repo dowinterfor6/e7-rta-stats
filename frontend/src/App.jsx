@@ -22,6 +22,7 @@ const App = () => {
   // TODO: Loading screen or something for rtaData = {};
   if (rtaData) {
     console.log(Object.keys(rtaData));
+    console.log(rtaData);
   }
 
   return (

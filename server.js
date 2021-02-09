@@ -13,6 +13,8 @@ const {
   firstPicks,
 } = require("./util/sqlStatements");
 
+const { nameErrorMap } = require("./util/nameErrorMap");
+
 const db = new sqlite3.Database(
   "./db/rta_snapshot_2021_2_7.db",
   sqlite3.OPEN_READONLY,
@@ -38,6 +40,7 @@ const fetchFromDatabase = (sqlStatementObj) => {
         if (err) {
           console.error(err.message);
         }
+        row = fixNameErrors(row);
         sqlStatementResponse.push(row);
       });
 
@@ -49,6 +52,7 @@ const fetchFromDatabase = (sqlStatementObj) => {
           if (err) {
             console.error(err.message);
           }
+          row = fixNameErrors(row);
           sqlStatementResponses.push(row);
         });
         if (val.region) {
@@ -64,6 +68,21 @@ const fetchFromDatabase = (sqlStatementObj) => {
   }
 
   return dbResponse;
+};
+
+const nameErrorFields = ["preban", "postban", "pick", "firstPick"];
+const nameMapKeys = Object.keys(nameErrorMap);
+
+const fixNameErrors = (row) => {
+  nameErrorFields.forEach((field) => {
+    const val = row[field];
+    if (val) {
+      if (nameMapKeys.includes(val)) {
+        row[field] = nameErrorMap[val];
+      }
+    }
+  });
+  return row;
 };
 
 db.serialize(() => {
