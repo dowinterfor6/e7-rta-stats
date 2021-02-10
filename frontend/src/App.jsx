@@ -1,81 +1,87 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import Selection from "./components/Selection";
 import Nav from "./components/Nav";
 import "./styles/app.scss";
 import { fetchRtaData } from "./util/apiUtil";
-import { FormControl, Select, InputLabel, MenuItem } from "@material-ui/core";
 
 const App = () => {
+  const SET_CAT = "SETCAT";
+  const SET_SUBCAT = "SETSUBCAT";
+
+  const reducer = (state, { type, payload }) => {
+    let nextState = Object.assign({}, state);
+
+    switch (type) {
+      case SET_CAT:
+        nextState.selectedCat = payload;
+        return nextState;
+      case SET_SUBCAT:
+        nextState.selectedSubcat = payload;
+        return nextState;
+      default:
+        return state;
+    }
+  };
+
+  const initialState = {
+    selectedCat: "",
+    selectedSubcat: "",
+  };
+
+  const setCat = (cat) =>
+    dispatch({
+      type: SET_CAT,
+      payload: cat,
+    });
+
+  const setSubcat = (subcat) =>
+    dispatch({
+      type: SET_SUBCAT,
+      payload: subcat,
+    });
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const [rtaData, setRtaData] = useState({});
   const [selectedData, setSelectedData] = useState();
+  const [categoryTree, setCategoryTree] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await fetchRtaData();
       setRtaData(data);
+
+      const catTree = {};
+      for (const [cat, val] of Object.entries(data)) {
+        catTree[cat] = Object.keys(val);
+      }
+      setCategoryTree(catTree);
+      setCat(Object.keys(catTree)[0]);
+      setSubcat(catTree[Object.keys(catTree)[0]][0]);
     };
 
     fetchData();
-    // TODO: Build input tree (or whatever it is)
-    // to determine what inputs can be selected
   }, []);
+
+  // TODO: Handle submit for Selection
 
   // TODO: Loading screen or something for rtaData = {};
   if (rtaData) {
-    console.log(Object.keys(rtaData));
-    console.log(rtaData);
+    // console.log(Object.keys(rtaData));
+    // console.log(rtaData);
   }
+
+  console.log("state: ", state);
 
   return (
     <div className="App">
       <Nav />
-      <section className="input-container">
-        <FormControl variant="outlined" className="selection-form">
-          <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            label="Age"
-            MenuProps={{
-              anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "left",
-              },
-              getContentAnchorEl: null,
-            }}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl variant="outlined" className="selection-form">
-          <InputLabel id="demo-simple-select-outlined-label">
-            dsgdsag
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            label="dsgdsag"
-            MenuProps={{
-              anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "left",
-              },
-              getContentAnchorEl: null,
-            }}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Tendsaf</MenuItem>
-            <MenuItem value={20}>Twentadsfy</MenuItem>
-            <MenuItem value={30}>Thirtdsafy</MenuItem>
-          </Select>
-        </FormControl>
-      </section>
+      <Selection
+        categoryTree={categoryTree}
+        setCat={setCat}
+        setSubcat={setSubcat}
+        state={state}
+      />
     </div>
   );
 };
