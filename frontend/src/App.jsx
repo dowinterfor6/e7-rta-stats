@@ -3,6 +3,7 @@ import Selection from "./components/Selection";
 import Nav from "./components/Nav";
 import "./styles/app.scss";
 import { fetchRtaData } from "./util/apiUtil";
+import ChartContainer from "./components/ChartContainer";
 
 const App = () => {
   const SET_CAT = "SETCAT";
@@ -43,7 +44,6 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [rtaData, setRtaData] = useState({});
-  const [selectedData, setSelectedData] = useState();
   const [categoryTree, setCategoryTree] = useState({});
 
   useEffect(() => {
@@ -82,6 +82,7 @@ const App = () => {
         setSubcat={setSubcat}
         state={state}
       />
+      <ChartContainer state={state} rtaData={rtaData} />
     </div>
   );
 };

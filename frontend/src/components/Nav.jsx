@@ -9,6 +9,7 @@ const Nav = () => {
       <menu>
         <li>Donate</li>
         <li>Github</li>
+        <li>E7 Reddit</li>
       </menu>
     </nav>
   )

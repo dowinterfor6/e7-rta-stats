@@ -504,29 +504,29 @@ const firstPicksByLeague = distinctLeagues.map((league) => {
 
 module.exports = {
   players: {
-    numBattles,
-    playersPerRegion,
-    playersPerLeague,
+    numBattles, // singleValue
+    playersPerRegion, // listValues
+    playersPerLeague, // listValues
   },
   prebans: {
-    allPrebans,
-    prebansByRegion,
-    prebansByLeague,
+    allPrebans, // listValues
+    prebansByRegion, // prefiltered
+    prebansByLeague, // prefiltered
   },
   postbans: {
-    allPostbans,
-    postbansByRegion,
-    postbansByLeague,
+    allPostbans, // listValues
+    postbansByRegion, // prefiltered
+    postbansByLeague, // prefiltered
   },
   topPicks: {
-    allTopPicks,
-    topPicksByRegion,
-    topPicksByLeague,
+    allTopPicks, // listValues
+    topPicksByRegion, // prefiltered
+    topPicksByLeague, // prefiltered
   },
   firstPicks: {
-    allFirstPicks,
-    firstPicksByRegion,
-    firstPicksByLeague,
+    allFirstPicks, // listValues
+    firstPicksByRegion, // prefiltered
+    firstPicksByLeague, // prefiltered
   },
 };
 

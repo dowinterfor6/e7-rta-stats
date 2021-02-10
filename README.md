@@ -6,6 +6,8 @@ Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments
 
 Error handling might be needed for DB
 
+Percentages from backend?
+
 ## Future statements to do:
 
 Prebans (how many people won after X preban)

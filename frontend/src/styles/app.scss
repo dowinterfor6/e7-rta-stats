@@ -16,15 +16,4 @@ main {
     justify-content: space-evenly;
     align-items: center;
   }
-
-  .selection-form {
-    width: 150px;
-
-    // TODO: This is such a stupid fix lol
-    // (also move to appropriate file)
-    label {
-      padding-right: 6px;
-      background-color: white;
-    }
-  }
 }

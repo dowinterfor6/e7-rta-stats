@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
+import "../styles/selection.scss";
 
 const Selection = ({ categoryTree, setCat, setSubcat, state }) => {
   const [activeCat, setActiveCat] = useState(state.selectedCat);
