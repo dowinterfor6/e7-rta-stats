@@ -104,7 +104,7 @@ const ChartContainer = ({ state }) => {
       },
     },
     tooltip: {
-      // template: () => "", // Kind of hacky
+      // TODO: Use template to formate %?
     },
     exportMenu: {
       visible: true,
