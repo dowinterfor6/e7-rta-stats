@@ -1,103 +1,164 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Chart } from "chart.js";
+// import { BarChart, ColumnChart } from "@toast-ui/chart";
+import { BarChart, PieChart, TreemapChart } from "@toast-ui/react-chart";
 import "../styles/chart-container.scss";
+import { PIE_CHART, SINGLE_DATA, TREEMAP_CHART } from "../util/miscUtil";
 
-const ChartContainer = ({ state, rtaData }) => {
-  const context = useRef(null);
-  const chartRef = useRef(null);
-  const [validData, setValidData] = useState();
-  let chart;
-  // TODO: Handle num battles case
+const ChartContainer = ({ state }) => {
+  const [barchartCharacterList, setBarchartCharacterList] = useState([]);
+  const [barchartSeriesCounts, setBarchartSeriesCounts] = useState([]);
+  // TODO: Use resize event listener to resize chart probably
 
   useEffect(() => {
-    const { selectedCat, selectedSubcat } = state;
-    if (selectedCat && selectedSubcat) {
-      const data = rtaData[selectedCat][selectedSubcat];
+    if (Object.keys(state.rtaData).length && state.selection) {
+      const { cat, subcat } = state.selection;
 
-      if (data) {
-        setValidData({ title: selectedSubcat, data });
+      const data = state.rtaData[cat][subcat];
+      switch (state.dataType) {
+        case SINGLE_DATA:
+          const characters = [];
+          const counts = [];
+          let totalCount = 0; // Using reduce is better, except the unknown variable
+
+          // TODO: Filter out anything less than 1%
+          data.forEach((val) => {
+            const { count, preban, postban, pick, firstPick } = val;
+
+            // TODO: Find a more elegant way to check
+            if (preban) {
+              characters.push(preban);
+            } else if (postban) {
+              characters.push(postban);
+            } else if (pick) {
+              characters.push(pick);
+            } else if (firstPick) {
+              characters.push(firstPick);
+            }
+            counts.push(count);
+            totalCount += count;
+          });
+
+          // As percentage
+          // TODO: Option between percentage and number?
+          const percentage = counts.map(
+            (count) => Math.round(((100 * count) / totalCount) * 100) / 100
+          );
+
+          setBarchartCharacterList(characters);
+          setBarchartSeriesCounts(percentage);
+          break;
+        default:
+          // TODO: this lol
+          // console.log(state.dataType);
+          break;
       }
     }
-  }, [state, rtaData]);
+  }, [state.rtaData, state.selection]);
 
-  useEffect(() => {
-    if (chartRef.current && validData) {
-      console.log("updating chart with: ", validData);
-      const labels = [];
-      const data = [];
-
-      // Num Battles
-      validData.data.forEach((obj) => {
-        labels.push(Object.keys(obj)[0]);
-        data.push(Object.values(obj)[0]);
-      });
-      chartRef.current.data.labels = labels;
-      chartRef.current.data.datasets[0].data = data;
-      chartRef.current.data.datasets[0].label = validData.title;
-
-      // TODO: This needs a more robust solution
-      // if (validData.title.match("League")) {
-      //   validData.data.forEach((obj) => {
-      //     labels.push(obj.league);
-      //     data.push(obj.count);
-      //   });
-      //   chartRef.current.data.labels = labels;
-      //   chartRef.current.data.datasets[0].data = data;
-      //   chartRef.current.data.datasets[0].label = validData.title;
-      // }
-
-      chartRef.current.update({
-        duration: 500,
-      });
-    }
-  }, [validData, chart]);
-
-  if (context.current && !chartRef.current) {
-    chartRef.current = new Chart(context.current, {
-      type: "bar",
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: "",
-            data: [],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
-            borderWidth: 1,
-          },
-        ],
+  const barchartData = {
+    categories: barchartCharacterList,
+    series: [
+      {
+        name: "",
+        data: barchartSeriesCounts,
       },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
-          ],
+    ],
+  };
+
+  const treemapDataArr = barchartCharacterList.map((char, idx) => ({
+    label: char,
+    data: barchartSeriesCounts[idx],
+  }));
+
+  const treemapchartData = {
+    series: treemapDataArr,
+  };
+
+  const pieDataArr = barchartCharacterList.map((char, idx) => ({
+    name: char,
+    data: barchartSeriesCounts[idx],
+  }));
+
+  const piechartData = {
+    series: pieDataArr,
+  };
+
+  const genericOptions = {
+    chart: { height: 1000, width: 1000 },
+    series: {
+      dataLabels: {
+        visible: true,
+      },
+    },
+    xAxis: {
+      label: {
+        formatter: (val) => `${val}%`,
+      },
+    },
+    theme: {
+      series: {
+        hover: {
+          // color: "#FF0000",
+          borderWidth: 0,
         },
       },
-    });
+    },
+    tooltip: {
+      // template: () => "", // Kind of hacky
+    },
+    exportMenu: {
+      visible: true,
+    },
+    legend: {
+      visible: false,
+    },
+  };
+
+  const pieOptions = Object.assign({}, genericOptions, {
+    series: {
+      dataLabels: {
+        visible: true,
+        anchor: "outer",
+        pieSeriesName: {
+          visible: true,
+          anchor: "outer",
+        },
+      },
+    },
+  });
+
+  const barChart = Object.keys(barchartSeriesCounts).length ? (
+    <BarChart data={barchartData} options={genericOptions} />
+  ) : undefined;
+
+  const treemapChart = Object.keys(barchartSeriesCounts).length ? (
+    <TreemapChart data={treemapchartData} options={genericOptions} />
+  ) : undefined;
+
+  const pieChart = Object.keys(barchartSeriesCounts).length ? (
+    <PieChart data={piechartData} options={pieOptions} />
+  ) : undefined;
+
+  let chart;
+
+  switch (state.chartType) {
+    case PIE_CHART:
+      chart = pieChart;
+      break;
+    case TREEMAP_CHART:
+      chart = treemapChart;
+      break;
+    default:
+      chart = barChart;
+      break;
   }
 
   return (
-    <section className="chart-container">
-      <canvas ref={context} id="chart" width="400" height="400"></canvas>
+    <section className="chart">
+      {chart}
+      {/* {barChart}
+      {pieChart}
+      {treemapChart} */}
     </section>
   );
 };

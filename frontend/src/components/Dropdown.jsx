@@ -1,30 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { FormControl, Select, InputLabel, MenuItem } from "@material-ui/core";
+import { checkDataType } from "../util/miscUtil";
 
-const Dropdown = ({ label, options, setStore, state, isCat }) => {
-  const [selected, setSelected] = useState();
-
+// TODO: Probably needs a complete overhaul
+const Dropdown = ({
+  label,
+  options,
+  setStoreSelection,
+  setDataType,
+  state,
+}) => {
   const handleChange = (e) => {
     const selection = e.target.value;
-    setSelected(selection);
-    setStore(selection);
+    setStoreSelection(selection);
+
+    if (setDataType) {
+      const { cat, subcat } = selection;
+      setDataType(checkDataType(state.rtaData[cat][subcat]));
+    }
   };
 
-  useEffect(() => {
-    if (!isCat) {
-      setSelected(options.length > 0 ? options[0] : "");
-      setStore(options.length > 0 ? options[0] : "");
-    } else {
-      setSelected(state.selectedCat);
-    }
-  }, [state.selectedCat, options]);
-
   const formatOption = (option) => {
-    const camelCaseSpace = option.split("").reduce((acc, curr) => {
-      curr === curr.toUpperCase() ? (acc += ` ${curr}`) : (acc += curr);
-      return acc;
-    }, "");
-    return camelCaseSpace[0].toUpperCase() + camelCaseSpace.slice(1);
+    if (!setDataType) {
+      return `${option[0]}${option.slice(1).toLowerCase()}`;
+    }
+
+    const { cat, subcat } = option;
+    const formatWord = (word) => {
+      const camelCaseSpace = word.split("").reduce((acc, curr) => {
+        curr === curr.toUpperCase() ? (acc += ` ${curr}`) : (acc += curr);
+        return acc;
+      }, "");
+      return camelCaseSpace[0].toUpperCase() + camelCaseSpace.slice(1);
+    };
+
+    return `${formatWord(cat)} - ${formatWord(subcat)}`;
   };
 
   return (
@@ -42,10 +52,14 @@ const Dropdown = ({ label, options, setStore, state, isCat }) => {
           getContentAnchorEl: null,
         }}
         onChange={handleChange}
-        value={selected || ""}
+        value={setDataType ? state.selection || "" : state.chartType}
       >
         {options.map((option, idx) => (
-          <MenuItem value={option} key={`${option}-${idx}`}>
+          <MenuItem
+            value={option}
+            key={`${option}-${idx}`}
+            selected={idx === 0}
+          >
             {formatOption(option)}
           </MenuItem>
         ))}

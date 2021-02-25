@@ -1,40 +1,57 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import "../styles/selection.scss";
+import {
+  BAR_CHART,
+  checkDataType,
+  PIE_CHART,
+  TREEMAP_CHART,
+} from "../util/miscUtil";
 
-const Selection = ({ categoryTree, setCat, setSubcat, state }) => {
-  const [activeCat, setActiveCat] = useState(state.selectedCat);
-  const [availableSubcats, setAvailableSubcats] = useState([]);
-  const categories = Object.keys(categoryTree);
+const Selection = ({
+  setStoreSelection,
+  categoryTree,
+  setDataType,
+  setChartType,
+  state,
+}) => {
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setActiveCat(state.selectedCat);
-    // setAvailableSubcats(categoryTree[state.selectedCat]);
-  }, [state.selectedCat]);
-
-  useEffect(() => {
-    if (activeCat) {
-      setAvailableSubcats(categoryTree[activeCat]);
+    const formattedCategory = [];
+    for (const [category, values] of Object.entries(categoryTree)) {
+      formattedCategory.push(
+        ...values.reduce((acc, curr) => {
+          if (curr === "numBattles") return acc;
+          acc.push({ cat: category, subcat: curr });
+          return acc;
+        }, [])
+      );
     }
-  }, [activeCat, categoryTree]);
-  // TODO: Need to track active
-  // TODO: Only subcat selection will "change" state
+
+    const defaultCat = formattedCategory[0];
+    setCategories(formattedCategory);
+    if (defaultCat) {
+      const { cat, subcat } = defaultCat;
+      setStoreSelection(defaultCat);
+      setDataType(checkDataType(state.rtaData[cat][subcat]));
+    }
+  }, [categoryTree]);
 
   return (
     <section className="input-container">
       <Dropdown
         options={categories}
-        label={"Category"}
-        setStore={setCat}
+        label={"Data"}
+        setStoreSelection={setStoreSelection}
+        setDataType={setDataType}
         state={state}
-        isCat={true}
       />
       <Dropdown
-        options={availableSubcats}
-        label={"Subcategory"}
-        setStore={setSubcat}
+        options={[BAR_CHART, PIE_CHART, TREEMAP_CHART]}
+        label={"Chart Type"}
+        setStoreSelection={setChartType}
         state={state}
-        isCat={false}
       />
     </section>
   );

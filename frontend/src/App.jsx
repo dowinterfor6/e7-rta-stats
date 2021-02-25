@@ -4,46 +4,67 @@ import Nav from "./components/Nav";
 import "./styles/app.scss";
 import { fetchRtaData } from "./util/apiUtil";
 import ChartContainer from "./components/ChartContainer";
+import { BAR_CHART } from "./util/miscUtil";
 
 const App = () => {
-  const SET_CAT = "SETCAT";
-  const SET_SUBCAT = "SETSUBCAT";
+  const SET_SELECTION = "SETSELECTION";
+  const SET_DATA_TYPE = "SETDATATYPE";
+  const SET_RTA_DATA = "SETRTADATA";
+  const SET_CHART_TYPE = "SETCHARTTYPE";
 
   const reducer = (state, { type, payload }) => {
     let nextState = Object.assign({}, state);
 
     switch (type) {
-      case SET_CAT:
-        nextState.selectedCat = payload;
+      // TODO: Could probably refactor this
+      case SET_SELECTION:
+        nextState.selection = payload;
         return nextState;
-      case SET_SUBCAT:
-        nextState.selectedSubcat = payload;
+      case SET_DATA_TYPE:
+        nextState.dataType = payload;
+        return nextState;
+      case SET_RTA_DATA:
+        nextState.rtaData = payload;
+        return nextState;
+      case SET_CHART_TYPE:
+        nextState.chartType = payload;
         return nextState;
       default:
         return state;
     }
   };
 
+  const setStoreSelection = (selection) =>
+    dispatch({
+      type: SET_SELECTION,
+      payload: selection,
+    });
+
+  const setChartType = (type) =>
+    dispatch({
+      type: SET_CHART_TYPE,
+      payload: type,
+    });
+
+  const setDataType = (dataType) =>
+    dispatch({
+      type: SET_DATA_TYPE,
+      payload: dataType,
+    });
+
+  const setRtaData = (rtaData) =>
+    dispatch({
+      type: SET_RTA_DATA,
+      payload: rtaData,
+    });
+
   const initialState = {
-    selectedCat: "",
-    selectedSubcat: "",
+    rtaData: {},
+    chartType: BAR_CHART,
   };
-
-  const setCat = (cat) =>
-    dispatch({
-      type: SET_CAT,
-      payload: cat,
-    });
-
-  const setSubcat = (subcat) =>
-    dispatch({
-      type: SET_SUBCAT,
-      payload: subcat,
-    });
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [rtaData, setRtaData] = useState({});
   const [categoryTree, setCategoryTree] = useState({});
 
   useEffect(() => {
@@ -56,20 +77,10 @@ const App = () => {
         catTree[cat] = Object.keys(val);
       }
       setCategoryTree(catTree);
-      setCat(Object.keys(catTree)[0]);
-      setSubcat(catTree[Object.keys(catTree)[0]][0]);
     };
 
     fetchData();
   }, []);
-
-  // TODO: Handle submit for Selection
-
-  // TODO: Loading screen or something for rtaData = {};
-  if (rtaData) {
-    // console.log(Object.keys(rtaData));
-    // console.log(rtaData);
-  }
 
   console.log("state: ", state);
 
@@ -77,12 +88,13 @@ const App = () => {
     <div className="App">
       <Nav />
       <Selection
+        setStoreSelection={setStoreSelection}
+        setDataType={setDataType}
+        setChartType={setChartType}
         categoryTree={categoryTree}
-        setCat={setCat}
-        setSubcat={setSubcat}
         state={state}
       />
-      <ChartContainer state={state} rtaData={rtaData} />
+      <ChartContainer state={state} />
     </div>
   );
 };
