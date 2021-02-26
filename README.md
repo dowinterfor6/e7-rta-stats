@@ -1,12 +1,10 @@
 # E7 RTA Stats
 
-Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments/lferb2/real_rta_dataset_8000_accounts_60000_recent/?utm_source=share&utm_medium=web2x&context=3)
+Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments/lferb2/real_rta_dataset_8000_accounts_60000_recent/)
 
 ## Issues
 
 Error handling might be needed for DB
-
-Percentages from backend?
 
 ## Future statements to do:
 

@@ -107,7 +107,16 @@ const App = () => {
         state={state}
       />
       <div className="data-date-container">
-        <span>Data obtained on 2021/02/07</span>
+        <span>
+          <a
+            href="https://www.reddit.com/r/EpicSeven/comments/lferb2/real_rta_dataset_8000_accounts_60000_recent/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Data
+          </a>
+          &nbsp;obtained on 2021/02/07
+        </span>
       </div>
       <ChartContainer state={state} />
     </div>
