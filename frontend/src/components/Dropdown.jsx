@@ -61,7 +61,10 @@ const Dropdown = ({
   };
 
   return (
-    <FormControl variant="outlined" className="selection-form">
+    <FormControl
+      variant="outlined"
+      className={`selection-form ${label === "Filter" ? "filter" : ""}`}
+    >
       <InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-outlined-label"

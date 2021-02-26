@@ -1,6 +1,9 @@
 .selection-form {
   width: 300px;
 
+  &.filter {
+    width: 125px;
+  }
   // TODO: This is such a stupid fix lol
   // (also move to appropriate file)
   label {

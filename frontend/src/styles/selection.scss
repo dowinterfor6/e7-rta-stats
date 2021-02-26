@@ -1,6 +1,14 @@
 .input-container {
-  padding: 10px 50px;
+  width: 85%;
+  margin: 0 auto;
+  padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  .left {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
 }

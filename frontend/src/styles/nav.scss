@@ -1,22 +1,39 @@
 nav {
-  padding: 5px 20px;
+  width: 85%;
+  margin: auto;
+  padding: 5px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   h1 {
     margin: 0;
+    font-weight: 500;
+    font-size: 28px;
   }
 
   menu {
-    width: 300px;
+    height: 25px;
+    align-items: center;
+    width: 400px;
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 
     li {
       display: flex;
       justify-content: center;
+      align-items: center;
+
+      a {
+        color: rgba(0, 0, 0, 0.5);
+        text-decoration: none;
+        transition: color 0.2s;
+
+        &:hover {
+          color: black;
+        }
+      }
     }
   }
 }

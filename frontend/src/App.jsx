@@ -96,7 +96,7 @@ const App = () => {
   console.log("state: ", state);
 
   return (
-    <div className="App">
+    <div className="app">
       <Nav />
       <Selection
         setStoreSelection={setStoreSelection}
@@ -106,6 +106,9 @@ const App = () => {
         categoryTree={categoryTree}
         state={state}
       />
+      <div className="data-date-container">
+        <span>Data obtained on 2021/02/07</span>
+      </div>
       <ChartContainer state={state} />
     </div>
   );

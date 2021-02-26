@@ -11,8 +11,26 @@
 body {
   height: 100vh;
   margin: 0;
-}
+  font-family: Roboto, Helvetica, sans-serif;
 
-main {
-  height: 100%;
+  main {
+    height: 100%;
+
+    .app {
+      overflow: hidden;
+      height: 100%;
+      display: grid;
+      grid-template-rows: 75px 85px 16px 1fr;
+
+      .data-date-container {
+        width: 85%;
+        margin: auto;
+
+        span {
+          font-style: italic;
+          font-size: 14px;
+        }
+      }
+    }
+  }
 }

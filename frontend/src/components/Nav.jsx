@@ -5,14 +5,29 @@ const Nav = () => {
   return (
     <nav>
       {/* TODO: Logo? */}
-      <h1>E7 RTA Stats</h1>
+      <h1>Epic Seven RTA Stats</h1>
       <menu>
-        <li>Donate</li>
-        <li>Github</li>
-        <li>E7 Reddit</li>
+        <li>
+          <a
+            href="https://github.com/dowinterfor6/e7-rta-stats"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Github
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.reddit.com/r/EpicSeven/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Epic Seven Reddit
+          </a>
+        </li>
       </menu>
     </nav>
-  )
-}
+  );
+};
 
 export default Nav;

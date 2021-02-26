@@ -8,10 +8,13 @@ import {
   SINGLE_DATA,
   TREEMAP_CHART,
 } from "../util/miscUtil";
+import { useRef } from "react";
 
 const ChartContainer = ({ state }) => {
   const [barchartCharacterList, setBarchartCharacterList] = useState([]);
   const [barchartSeriesCounts, setBarchartSeriesCounts] = useState([]);
+
+  const chartContainerRef = useRef();
   // TODO: Use resize event listener to resize chart probably
 
   useEffect(() => {
@@ -194,8 +197,13 @@ const ChartContainer = ({ state }) => {
     series: pieDataArr,
   };
 
+  // TODO: Before fully load/scrollbar;
+  // console.log(chartContainerRef.current?.clientWidth);
+  const offsetHeight = chartContainerRef.current?.offsetHeight;
+  const offsetWidth = chartContainerRef.current?.offsetWidth;
+
   const genericOptions = {
-    chart: { height: 1000, width: 1000 },
+    chart: { height: offsetHeight, width: offsetWidth },
     series: {
       dataLabels: {
         visible: true,
@@ -265,11 +273,13 @@ const ChartContainer = ({ state }) => {
   }
 
   return (
-    <section className="chart">
-      {chart}
-      {/* {barChart}
-      {pieChart}
-      {treemapChart} */}
+    <section className="chart-container">
+      <div className="chart" ref={chartContainerRef}>
+        {chart}
+        {/* {barChart}
+        {pieChart}
+        {treemapChart} */}
+      </div>
     </section>
   );
 };
