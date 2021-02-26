@@ -93,8 +93,6 @@ const App = () => {
     fetchData();
   }, []);
 
-  console.log("state: ", state);
-
   return (
     <div className="app">
       <Nav />

@@ -162,8 +162,6 @@ const ChartContainer = ({ state }) => {
           ]);
           break;
         default:
-          // TODO: this lol
-          console.log(state.dataType);
           break;
       }
     }
