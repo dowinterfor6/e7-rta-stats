@@ -6,6 +6,8 @@ Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments
 
 Error handling might be needed for DB
 
+Resizing doesn't auto update chart size
+
 ## Future statements to do:
 
 Prebans (how many people won after X preban)
@@ -38,4 +40,4 @@ c4073 Doll Maker Pearlhorizon
 
 c5004 Archdemons Shadow
 
-m**** These are 2* fodder
+m\*_\*\* These are 2_ fodder

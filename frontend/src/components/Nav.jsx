@@ -4,10 +4,9 @@ import "../styles/nav.scss";
 const Nav = () => {
   return (
     <nav>
-      {/* TODO: Logo? */}
       <div className="nav-logo">
         <img src="/images/ras_emote.gif" alt="Ras Laugh" />
-        <h1>RTA Stats</h1>
+        <h1>Epic 7 RTA Stats</h1>
       </div>
       <menu>
         <li>
