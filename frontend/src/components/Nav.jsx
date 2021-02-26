@@ -5,7 +5,10 @@ const Nav = () => {
   return (
     <nav>
       {/* TODO: Logo? */}
-      <h1>Epic Seven RTA Stats</h1>
+      <div className="nav-logo">
+        <img src="/images/ras_emote.gif" alt="Ras Laugh" />
+        <h1>RTA Stats</h1>
+      </div>
       <menu>
         <li>
           <a
