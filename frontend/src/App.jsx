@@ -11,6 +11,7 @@ const App = () => {
   const SET_DATA_TYPE = "SETDATATYPE";
   const SET_RTA_DATA = "SETRTADATA";
   const SET_CHART_TYPE = "SETCHARTTYPE";
+  const SET_FILTER = "SETFILTER";
 
   const reducer = (state, { type, payload }) => {
     let nextState = Object.assign({}, state);
@@ -19,6 +20,7 @@ const App = () => {
       // TODO: Could probably refactor this
       case SET_SELECTION:
         nextState.selection = payload;
+        nextState.filter = "";
         return nextState;
       case SET_DATA_TYPE:
         nextState.dataType = payload;
@@ -28,6 +30,9 @@ const App = () => {
         return nextState;
       case SET_CHART_TYPE:
         nextState.chartType = payload;
+        return nextState;
+      case SET_FILTER:
+        nextState.filter = payload;
         return nextState;
       default:
         return state;
@@ -56,6 +61,12 @@ const App = () => {
     dispatch({
       type: SET_RTA_DATA,
       payload: rtaData,
+    });
+
+  const setFilter = (filter) =>
+    dispatch({
+      type: SET_FILTER,
+      payload: filter,
     });
 
   const initialState = {
@@ -91,6 +102,7 @@ const App = () => {
         setStoreSelection={setStoreSelection}
         setDataType={setDataType}
         setChartType={setChartType}
+        setFilter={setFilter}
         categoryTree={categoryTree}
         state={state}
       />

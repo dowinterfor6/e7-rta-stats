@@ -1,4 +1,8 @@
 @import "../../node_modules/@toast-ui/chart/dist/toastui-chart.css";
+@import "./chart-container.scss";
+@import "./dropdown.scss";
+@import "./nav.scss";
+@import "./selection.scss";
 
 * {
   box-sizing: border-box;
@@ -11,11 +15,4 @@ body {
 
 main {
   height: 100%;
-
-  .input-container {
-    padding: 50px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-  }
 }

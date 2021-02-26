@@ -12,3 +12,9 @@ export const checkDataType = (data) => {
   }
   return data[0].league || data[0].server ? MULTI_SELECT : SINGLE_DATA;
 };
+
+export const formatServerName = (server) => {
+  const removePrefix = server.replace("world_", "");
+  const fullName = removePrefix.replace("eu", "europe").replace("kor", "korea");
+  return `${fullName[0].toUpperCase()}${fullName.slice(1)}`;
+};

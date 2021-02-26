@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
-import "../styles/selection.scss";
+
 import {
   BAR_CHART,
   checkDataType,
+  OBJ_MULTI_SELECT,
   PIE_CHART,
   TREEMAP_CHART,
 } from "../util/miscUtil";
@@ -13,6 +14,7 @@ const Selection = ({
   categoryTree,
   setDataType,
   setChartType,
+  setFilter,
   state,
 }) => {
   const [categories, setCategories] = useState([]);
@@ -38,21 +40,45 @@ const Selection = ({
     }
   }, [categoryTree]);
 
+  let filterOptions = [];
+  let filterDropdown;
+
+  if (state.dataType === OBJ_MULTI_SELECT) {
+    const { rtaData, selection } = state;
+    const { cat, subcat } = selection;
+
+    filterOptions = Object.keys(rtaData[cat][subcat]);
+    filterDropdown = (
+      <Dropdown
+        options={filterOptions}
+        label={"Filter"}
+        setStoreSelection={setFilter}
+        state={state}
+      />
+    );
+  }
+
   return (
     <section className="input-container">
-      <Dropdown
-        options={categories}
-        label={"Data"}
-        setStoreSelection={setStoreSelection}
-        setDataType={setDataType}
-        state={state}
-      />
-      <Dropdown
-        options={[BAR_CHART, PIE_CHART, TREEMAP_CHART]}
-        label={"Chart Type"}
-        setStoreSelection={setChartType}
-        state={state}
-      />
+      <div className="left">
+        <Dropdown
+          options={categories}
+          label={"Data"}
+          setStoreSelection={setStoreSelection}
+          setDataType={setDataType}
+          setFilter={setFilter}
+          state={state}
+        />
+        {filterDropdown}
+      </div>
+      <div className="right">
+        <Dropdown
+          options={[BAR_CHART, PIE_CHART, TREEMAP_CHART]}
+          label={"Chart Type"}
+          setStoreSelection={setChartType}
+          state={state}
+        />
+      </div>
     </section>
   );
 };

@@ -16,7 +16,7 @@ const distinctLeagues = [
   "bronze",
 ];
 
-const playersPerRegion = `
+const playersByRegion = `
 SELECT
   P1_SERVER as server,
   COUNT(*) as count
@@ -37,7 +37,7 @@ ORDER BY
   server
 `;
 
-const playersPerLeague = `
+const playersByLeague = `
 SELECT DISTINCT
   P1_LEAGUE as league,
   COUNT(*) as count
@@ -505,8 +505,8 @@ const firstPicksByLeague = distinctLeagues.map((league) => {
 module.exports = {
   players: {
     numBattles, // singleValue
-    playersPerRegion, // listValues
-    playersPerLeague, // listValues
+    playersByRegion, // listValues
+    playersByLeague, // listValues
   },
   prebans: {
     allPrebans, // listValues

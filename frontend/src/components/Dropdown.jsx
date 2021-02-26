@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FormControl, Select, InputLabel, MenuItem } from "@material-ui/core";
-import { checkDataType } from "../util/miscUtil";
+import {
+  checkDataType,
+  formatServerName,
+  OBJ_MULTI_SELECT,
+} from "../util/miscUtil";
 
 // TODO: Probably needs a complete overhaul
 const Dropdown = ({
@@ -8,6 +12,7 @@ const Dropdown = ({
   options,
   setStoreSelection,
   setDataType,
+  setFilter,
   state,
 }) => {
   const handleChange = (e) => {
@@ -16,12 +21,20 @@ const Dropdown = ({
 
     if (setDataType) {
       const { cat, subcat } = selection;
-      setDataType(checkDataType(state.rtaData[cat][subcat]));
+      const nextData = state.rtaData[cat][subcat];
+      const dataType = checkDataType(nextData);
+      setDataType(dataType);
+      if (dataType === OBJ_MULTI_SELECT) {
+        setFilter(Object.keys(nextData)[0]);
+      }
     }
   };
 
   const formatOption = (option) => {
     if (!setDataType) {
+      if (label === "Filter") {
+        return formatServerName(option);
+      }
       return `${option[0]}${option.slice(1).toLowerCase()}`;
     }
 
@@ -35,6 +48,16 @@ const Dropdown = ({
     };
 
     return `${formatWord(cat)} - ${formatWord(subcat)}`;
+  };
+
+  const valueBinding = () => {
+    if (setDataType) {
+      return state.selection || "";
+    } else if (label === "Filter") {
+      return state.filter || "";
+    } else {
+      return state.chartType;
+    }
   };
 
   return (
@@ -52,7 +75,7 @@ const Dropdown = ({
           getContentAnchorEl: null,
         }}
         onChange={handleChange}
-        value={setDataType ? state.selection || "" : state.chartType}
+        value={valueBinding()}
       >
         {options.map((option, idx) => (
           <MenuItem
