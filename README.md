@@ -42,4 +42,4 @@ c4073 Doll Maker Pearlhorizon
 
 c5004 Archdemons Shadow
 
-m\*\*\*\* These are 2 fodder
+m\*\*\*\* These are 2\* fodder
