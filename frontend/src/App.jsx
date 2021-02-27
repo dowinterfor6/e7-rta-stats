@@ -17,7 +17,10 @@ const App = () => {
     let nextState = Object.assign({}, state);
 
     switch (type) {
-      // TODO: Could probably refactor this
+      /*
+        TODO: Possibly refactor all cases that are
+              only setting key to payload
+      */
       case SET_SELECTION:
         nextState.selection = payload;
         nextState.filter = "";

@@ -98,7 +98,6 @@ db.close((err) => {
     console.error(err.message);
   }
 
-  // console.log(dbData);
   console.log("Close db connection");
 });
 
@@ -112,8 +111,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// TODO: Data from db
-app.get("/api/test", (req, res) => {
+app.get("/api/rta-data", (req, res) => {
   res.json(dbData);
 });
 

@@ -15,7 +15,9 @@ const ChartContainer = ({ state }) => {
   const [barchartSeriesCounts, setBarchartSeriesCounts] = useState([]);
 
   const chartContainerRef = useRef();
-  // TODO: Use resize event listener to resize chart probably
+  /*
+    TODO: Use resize listener to update chart size
+  */
 
   useEffect(() => {
     if (Object.keys(state.rtaData).length && state.selection) {
@@ -23,17 +25,23 @@ const ChartContainer = ({ state }) => {
 
       const data = state.rtaData[cat][subcat];
 
-      // TODO: This needs major refactoring
+      /*
+        TODO: Major refactoring/redesign can be made
+              to make this better instead of declaring
+              so many variables, and possibly Arr.reduce
+              as well as checking for what type of data
+              is present
+        TODO: Functionality to switch between % and count/totalCount
+      */
       switch (state.dataType) {
         case SINGLE_DATA:
           const characters = [];
           const counts = [];
-          let totalCount = 0; // Using reduce is better, except the unknown variable
+          let totalCount = 0;
 
           data.forEach((val) => {
             const { count, preban, postban, pick, firstPick } = val;
 
-            // TODO: Find a more elegant way to check
             if (preban) {
               characters.push(preban);
             } else if (postban) {
@@ -47,8 +55,6 @@ const ChartContainer = ({ state }) => {
             totalCount += count;
           });
 
-          // As percentage
-          // TODO: Option between percentage and number?
           const percentages = counts.map(
             (count) => Math.round(((100 * count) / totalCount) * 100) / 100
           );
@@ -79,7 +85,7 @@ const ChartContainer = ({ state }) => {
         case MULTI_SELECT:
           const regionOrLeagues = [];
           const playerCounts = [];
-          let totalPlayerCount = 0; // Using reduce is better, except the unknown variable
+          let totalPlayerCount = 0;
 
           const sortedData = subcat.match("Region")
             ? data.sort((a, b) => b.count - a.count)
@@ -88,7 +94,6 @@ const ChartContainer = ({ state }) => {
           sortedData.forEach((val) => {
             const { count, server, league } = val;
 
-            // TODO: Find a more elegant way to check
             if (server) {
               regionOrLeagues.push(formatServerName(server));
             } else if (league) {
@@ -100,8 +105,6 @@ const ChartContainer = ({ state }) => {
             totalPlayerCount += count;
           });
 
-          // As percentage
-          // TODO: Option between percentage and number?
           const playerPercentages = playerCounts.map(
             (count) =>
               Math.round(((100 * count) / totalPlayerCount) * 100) / 100
@@ -113,12 +116,11 @@ const ChartContainer = ({ state }) => {
         case OBJ_MULTI_SELECT:
           const multiCharacters = [];
           const multiCounts = [];
-          let multiTotalCount = 0; // Using reduce is better, except the unknown variable
+          let multiTotalCount = 0;
 
           data[state.filter].forEach((val) => {
             const { count, preban, postban, pick, firstPick } = val;
 
-            // TODO: Find a more elegant way to check
             if (preban) {
               multiCharacters.push(preban);
             } else if (postban) {
@@ -132,8 +134,6 @@ const ChartContainer = ({ state }) => {
             multiTotalCount += count;
           });
 
-          // As percentage
-          // TODO: Option between percentage and number?
           const multiPercentages = multiCounts.map(
             (count) => Math.round(((100 * count) / multiTotalCount) * 100) / 100
           );
@@ -195,8 +195,7 @@ const ChartContainer = ({ state }) => {
     series: pieDataArr,
   };
 
-  // TODO: Before fully load/scrollbar;
-  // console.log(chartContainerRef.current?.clientWidth);
+  // Dimensions before scrollbar (if any), app.scss has overflow: hidden to help
   const offsetHeight = chartContainerRef.current?.offsetHeight;
   const offsetWidth = chartContainerRef.current?.offsetWidth;
 
@@ -215,13 +214,15 @@ const ChartContainer = ({ state }) => {
     theme: {
       series: {
         hover: {
-          // color: "#FF0000",
           borderWidth: 0,
         },
       },
     },
     tooltip: {
-      // TODO: Use template to formate %?
+      /*
+        TODO: Custom tooltip template to format % and display
+              only necessary information
+      */
     },
     exportMenu: {
       visible: true,
@@ -274,9 +275,6 @@ const ChartContainer = ({ state }) => {
     <section className="chart-container">
       <div className="chart" ref={chartContainerRef}>
         {chart}
-        {/* {barChart}
-        {pieChart}
-        {treemapChart} */}
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FormControl, Select, InputLabel, MenuItem } from "@material-ui/core";
 import {
   checkDataType,
@@ -6,7 +6,12 @@ import {
   OBJ_MULTI_SELECT,
 } from "../util/miscUtil";
 
-// TODO: Probably needs a complete overhaul
+/*
+  TODO: Potentially refactor to using type consts instead of label
+        to differentiate between dropdown types. A better way 
+        would be to use a wrapper component to handle this logic
+        so Dropdown.jsx will only contain the dropdown itself
+*/
 const Dropdown = ({
   label,
   options,

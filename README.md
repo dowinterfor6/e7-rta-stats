@@ -1,9 +1,5 @@
 # E7 RTA Stats
 
-# TODO
-
-mobile responsive
-clarify comments
 domain name?
 google analytics
 
@@ -13,9 +9,9 @@ Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments
 
 Error handling might be needed for DB
 
-Resizing doesn't auto update chart size
+Resizing window doesn't auto update chart size
 
-## Future statements to do:
+## Other SQL statements:
 
 Prebans (how many people won after X preban)
 
@@ -25,7 +21,7 @@ Pick (how many people won after X pick, ignore postban)
 
 Counterpicks (how many people won after X pick as an answer to Y)
 
-## Name error
+## Name error replacement
 
 c1090 Ray
 
