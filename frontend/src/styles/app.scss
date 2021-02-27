@@ -1,3 +1,5 @@
+$mobile-width: 600px;
+
 @import "../../node_modules/@toast-ui/chart/dist/toastui-chart.css";
 @import "./chart-container.scss";
 @import "./dropdown.scss";
@@ -19,8 +21,8 @@ body {
     .app {
       overflow: hidden;
       height: 100%;
-      display: grid;
-      grid-template-rows: 75px 85px 16px 1fr;
+      display: flex;
+      flex-direction: column;
 
       .data-date-container {
         width: 85%;
@@ -41,6 +43,11 @@ body {
             }
           }
         }
+      }
+
+      @media screen and (min-width: $mobile-width) {
+        display: grid;
+        grid-template-rows: 75px 85px 16px 1fr;
       }
     }
   }

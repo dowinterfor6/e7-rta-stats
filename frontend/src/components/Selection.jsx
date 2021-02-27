@@ -60,25 +60,25 @@ const Selection = ({
 
   return (
     <section className="input-container">
-      <div className="left">
-        <Dropdown
-          options={categories}
-          label={"Data"}
-          setStoreSelection={setStoreSelection}
-          setDataType={setDataType}
-          setFilter={setFilter}
-          state={state}
-        />
-        {filterDropdown}
-      </div>
-      <div className="right">
-        <Dropdown
-          options={[BAR_CHART, PIE_CHART, TREEMAP_CHART]}
-          label={"Chart Type"}
-          setStoreSelection={setChartType}
-          state={state}
-        />
-      </div>
+      {/* <div className="left"> */}
+      <Dropdown
+        options={categories}
+        label={"Data"}
+        setStoreSelection={setStoreSelection}
+        setDataType={setDataType}
+        setFilter={setFilter}
+        state={state}
+      />
+      {filterDropdown}
+      {/* </div> */}
+      {/* <div className="right"> */}
+      <Dropdown
+        options={[BAR_CHART, PIE_CHART, TREEMAP_CHART]}
+        label={"Chart Type"}
+        setStoreSelection={setChartType}
+        state={state}
+      />
+      {/* </div> */}
     </section>
   );
 };

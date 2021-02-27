@@ -2,13 +2,34 @@
   width: 85%;
   margin: 0 auto;
   padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 111px 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 15px;
+  justify-content: flex-end;
 
-  .left {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
+  .data {
+    grid-area: 1/1/1/3;
+  }
+
+  .filter {
+    grid-area: 2/2/2/3;
+  }
+
+  @media screen and (min-width: $mobile-width) {
+    grid-template-columns: 300px 1fr 125px;
+    grid-template-rows: 1fr;
+
+    .data {
+      grid-area: 1/1/1/2;
+    }
+
+    .chart-type {
+      grid-area: 1/3/1/4;
+    }
+
+    .filter {
+      grid-area: 1/2/1/3;
+    }
   }
 }

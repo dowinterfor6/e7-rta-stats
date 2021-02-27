@@ -63,7 +63,8 @@ const Dropdown = ({
   return (
     <FormControl
       variant="outlined"
-      className={`selection-form ${label === "Filter" ? "filter" : ""}`}
+      className={`selection-form ${label.replace(" ", "-").toLowerCase()}`}
+      size={`${document.body.clientWidth < 900 ? "small" : "medium"}`}
     >
       <InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
       <Select
