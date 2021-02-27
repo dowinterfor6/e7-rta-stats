@@ -1,5 +1,7 @@
 # E7 RTA Stats
 
+add license
+clean up readme
 domain name?
 google analytics
 
