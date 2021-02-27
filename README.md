@@ -1,9 +1,10 @@
 # E7 RTA Stats
-google analytics
+
+A website to display Epic Seven RTA (Real Time Arena) data with 3 different graph types.
 
 Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments/lferb2/real_rta_dataset_8000_accounts_60000_recent/)
 
-## Issues
+## Known Issues
 
 Error handling might be needed for DB
 
@@ -41,4 +42,4 @@ c4073 Doll Maker Pearlhorizon
 
 c5004 Archdemons Shadow
 
-m\*_\*\* These are 2_ fodder
+m\*\*\*\* These are 2 fodder
