@@ -9,7 +9,7 @@ const Nav = () => {
         <img src="/images/ras_emote.gif" alt="Ras Laugh" />
         <h1>Epic 7 RTA Stats</h1>
       </div>
-      <menu>
+      <ul>
         <li>
           <a
             href="https://github.com/dowinterfor6/e7-rta-stats"
@@ -46,7 +46,7 @@ const Nav = () => {
             Epic Seven Reddit
           </a>
         </li>
-      </menu>
+      </ul>
     </nav>
   );
 };
