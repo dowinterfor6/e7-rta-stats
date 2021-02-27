@@ -1,8 +1,4 @@
 # E7 RTA Stats
-
-add license
-clean up readme
-domain name?
 google analytics
 
 Data provided by u/Gskip on [Reddit](https://www.reddit.com/r/EpicSeven/comments/lferb2/real_rta_dataset_8000_accounts_60000_recent/)
